@@ -16,7 +16,8 @@ marrow <- function(.x, .f, ..., .path, .partitioning = c(),
   arrow_datasets <- purrr::map(arrow_temp_dirs, arrow::open_dataset, format = "parquet")
   arrow_combined <- arrow::open_dataset(arrow_datasets)
   arrow::write_dataset(arrow_combined, path = .path,
-                       partitioning = .partitioning, format = .format)
+                       partitioning = .partitioning, format = .format,
+                       max_rows_per_file = 1e7)  # WS addition
   unlink(arrow_temp_dirs, recursive = T)
 
   otpt <- switch(output,
